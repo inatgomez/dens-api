@@ -13,20 +13,13 @@ class Idea(models.Model):
         'theme'
     ]
 
-    fields = [
-        ('id',
-         models.AutoField(
-             auto_created = True,
-             primary_key = True,
-             serialize = False,
-             verbose_name = 'ID'
-         ))
-    ]
-
+    id = models.IntegerField(primary_key=True)
     content = models.TextField()
     title = models.CharField(max_length=100)
     category = models.Choices(choices=categories)
     project_id = models.ForeignKey("project.unique_id")
+    date_added = models.DateTimeField("date_created")
+    date_updated = models.DateTimeField("date_updated")
 
 class Project(models.Model):
 
