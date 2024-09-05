@@ -3,39 +3,49 @@ from django.db import models
 
 class Idea(models.Model):
     """
-    Model representing an idea for a project.
+    Model representing an idea for a story project.
     """
+    class Category(models.TextChoices):
 
-    categories = [
-        'character',
-        'plot',
-        'setting',
-        'theme'
-    ]
+        PLOT = 'PLOT', 'Plot'
+        CHARACTER = 'CHARACTER', 'Character'
+        THEME = 'THEME', 'Theme'
+        SETTING = 'SETTING', 'Setting'
+        NONE = 'NONE', 'None'
 
     id = models.IntegerField(primary_key=True)
     content = models.TextField()
     title = models.CharField(max_length=100)
-    category = models.Choices(choices=categories)
-    project_id = models.ForeignKey("project.unique_id")
-    date_added = models.DateTimeField("date_created")
-    date_updated = models.DateTimeField("date_updated")
+    category = models.CharField(max_length=9, choices=Category.choices, default=Category.NONE)
+    project_id = models.ForeignKey("Project", on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
 class Project(models.Model):
+    """
+    Model representing a story project.
+    """
 
-    fiction_genre = [
-        'Romance',
-        'Mistery',
-        'Sci-fi',
-        'Fantasy',
-        'Action',
-        'Drama',
-        'Detective',
-        'Horror',
-        'Coming of age',
-        'Comedy'
-    ]
+    class Genre(models.TextChoices):
+
+        ROMANCE = 'ROMANCE', 'romance'
+        MISTERY = 'MiSTERY', 'mistery'
+        SCIFI = 'SCI-FI', 'sci-fi'
+        FANTASY = 'FANTASY', 'fantasy'
+        ACTION = 'ACTION', 'action'
+        DRAMA = 'DRAMA', 'drama'
+        DETECTIVE = 'DETECTIVE', 'detective'
+        HORROR = 'HORROR', 'horror'
+        AGE = 'COMING OF AGE', 'coming of age'
+        COMEDY = 'COMEDY', 'comedy'
 
     unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    genres = models.Choices(choices=fiction_genre)
+    main_genre = models.CharField(max_length=13, choices=Genre.choices)
+    mix_genre = models.CharField(max_length=13, choices=Genre.choices)
+
+    def __str__(self):
+        return self.name
