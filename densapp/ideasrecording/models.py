@@ -2,6 +2,9 @@ import uuid
 from django.db import models
 
 class Idea(models.Model):
+    """
+    Model representing an idea for a project.
+    """
 
     categories = [
         'character',
@@ -21,9 +24,9 @@ class Idea(models.Model):
     ]
 
     content = models.TextField()
-    title = models.TextField()
-    category = models.Choices(categories)
-    project_id = models.ForeignKey(Project.unique_id)
+    title = models.CharField(max_length=100)
+    category = models.Choices(choices=categories)
+    project_id = models.ForeignKey("project.unique_id")
 
 class Project(models.Model):
 
@@ -41,5 +44,5 @@ class Project(models.Model):
     ]
 
     unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.TextField()
-    genres = models.Choices(fiction_genre)
+    name = models.CharField(max_length=100)
+    genres = models.Choices(choices=fiction_genre)
