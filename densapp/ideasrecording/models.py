@@ -17,7 +17,7 @@ class Idea(models.Model):
     content = models.TextField()
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=9, choices=Category.choices, default=Category.NONE)
-    project_id = models.ForeignKey("Project", on_delete=models.PROTECT)
+    project = models.ForeignKey("Project", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
