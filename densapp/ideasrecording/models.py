@@ -11,12 +11,13 @@ class Idea(models.Model):
         CHARACTER = 'CHARACTER', 'Character'
         THEME = 'THEME', 'Theme'
         SETTING = 'SETTING', 'Setting'
-        NONE = 'NONE', 'None'
+        RESEARCH = 'RESEARCH', 'Research'
+        RANDOM = 'RANDOM', 'Random'
 
     id = models.IntegerField(primary_key=True)
     content = models.TextField()
     title = models.CharField(max_length=100)
-    category = models.CharField(max_length=9, choices=Category.choices, default=Category.NONE)
+    category = models.CharField(max_length=9, choices=Category.choices, default=Category.RANDOM)
     project = models.ForeignKey("Project", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -32,7 +33,7 @@ class Project(models.Model):
     class Genre(models.TextChoices):
 
         ROMANCE = 'ROMANCE', 'romance'
-        MISTERY = 'MiSTERY', 'mistery'
+        MISTERY = 'MISTERY', 'mistery'
         SCIFI = 'SCI-FI', 'sci-fi'
         FANTASY = 'FANTASY', 'fantasy'
         ACTION = 'ACTION', 'action'
