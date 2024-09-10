@@ -14,6 +14,13 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
+class CreateIdea(mixins.CreateModelMixin, GenericAPIView):
+    serializer_class = IdeaSerializer
+    queryset = Idea.objects.all()
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
 class RetrieveUpdateDeleteIdea(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
