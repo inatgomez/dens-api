@@ -1,20 +1,69 @@
-from django.http import JsonResponse
-from django.core import serializers
-from rest_framework.generics import ListCreateAPIView
+from rest_framework import mixins
+from rest_framework.generics import GenericAPIView
+from .serializers import IdeaSerializer, ProjectSerializer
 from .models import Idea, Project
 
-class list_projects(ListCreateAPIView):
+class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView, Idea.project):
 
-    queryset = Project.objects.all()
+    serializer_class = IdeaSerializer
+    queryset = Idea.objects.filter(project = Idea.project)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class RetrieveUpdateDeleteIdea(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericAPIView
+):
+
+    serializer_class = IdeaSerializer
+    queryset = Idea.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+        
+class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
+
     serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
-# def list_projects(request):
-#     projects = Project.objects.all()
-#     data = [serializers.serialize('json', projects)]
-#     return JsonResponse(data, safe=False)
+class RetrieveUpdateDeleteProject(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    GenericAPIView
+):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
 
-# def list_ideas_in_project(request, project_id):
-#     ideas = Idea.objects.filter(project_id=project_id)
-#     data = [serializers.serialize('json', ideas)]
-#     return JsonResponse(data, safe=False)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, *kwargs)
