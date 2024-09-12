@@ -3,10 +3,10 @@ from rest_framework.generics import GenericAPIView
 from .serializers import IdeaSerializer, ProjectSerializer
 from .models import Idea, Project
 
-class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView, Idea.project):
+class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
     serializer_class = IdeaSerializer
-    queryset = Idea.objects.filter(project = Idea.project)
+    queryset = Idea.objects.all()
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
