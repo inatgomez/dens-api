@@ -43,6 +43,7 @@ class Project(models.Model):
         HORROR = 'HORROR', 'horror'
         AGE = 'COMING OF AGE', 'coming of age'
         COMEDY = 'COMEDY', 'comedy'
+        NONE = 'NONE', 'none'
 
     unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
