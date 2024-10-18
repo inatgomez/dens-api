@@ -2,11 +2,12 @@ from rest_framework import mixins
 from rest_framework.generics import GenericAPIView
 from .serializers import IdeaSerializer, ProjectSerializer
 from .models import Idea, Project
+from rest_framework.response import Response
 
-class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView, Idea.project):
+class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
     serializer_class = IdeaSerializer
-    queryset = Idea.objects.filter(project = Idea.project)
+    queryset = Idea.objects.all()
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -49,6 +50,9 @@ class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericA
     queryset = Project.objects.all()
 
     def get(self, request, *args, **kwargs):
+        projects = self.get_queryset()
+        if not projects.exists():
+            return Response([{"message": "You'll see your projects soon!"}])
         return self.list(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):

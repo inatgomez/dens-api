@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.utils import timezone
 
 class Idea(models.Model):
     """
@@ -42,11 +43,13 @@ class Project(models.Model):
         HORROR = 'HORROR', 'horror'
         AGE = 'COMING OF AGE', 'coming of age'
         COMEDY = 'COMEDY', 'comedy'
+        NONE = 'NONE', 'none'
 
     unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(default=timezone.now)
     main_genre = models.CharField(max_length=13, choices=Genre.choices)
-    mix_genre = models.CharField(max_length=13, choices=Genre.choices)
+    mix_genre = models.CharField(max_length=13, choices=Genre.choices, blank=True)
 
     def __str__(self):
         return self.name
