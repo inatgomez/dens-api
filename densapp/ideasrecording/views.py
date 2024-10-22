@@ -19,6 +19,7 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
         return self.list(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
+        request.data['project'] = request.data.get('project_id')
         return self.create(request, *args, **kwargs)
 
 class RetrieveUpdateDeleteIdea(
