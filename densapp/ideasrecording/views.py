@@ -11,6 +11,10 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
     def get_queryset(self):
         project_id = self.kwargs.get('project')
         return Idea.objects.filter(project__pk=project_id)
+    
+    def perform_create(self, serializer):
+        project = Project.objects.get(pk=self.kwargs['project'])
+        serializer.save(project=project)
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
