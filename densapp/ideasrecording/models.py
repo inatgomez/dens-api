@@ -15,7 +15,7 @@ class Idea(models.Model):
         RESEARCH = 'RESEARCH', 'Research'
         RANDOM = 'RANDOM', 'Random'
 
-    id = models.IntegerField(primary_key=True)
+    unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField()
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=9, choices=Category.choices, default=Category.RANDOM)

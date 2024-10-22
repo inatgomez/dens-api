@@ -7,17 +7,16 @@ from rest_framework.response import Response
 class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
     serializer_class = IdeaSerializer
-    queryset = Idea.objects.all()
+    
+    def get_queryset(self):
+        project_id = self.kwargs.get('project')
+        return Idea.objects.filter(project__pk=project_id)
 
     def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response([{"message": "You'll see your ideas soon!"}])
         return self.list(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-class CreateIdea(mixins.CreateModelMixin, GenericAPIView):
-    serializer_class = IdeaSerializer
-    queryset = Idea.objects.all()
     
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
