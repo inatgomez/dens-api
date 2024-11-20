@@ -3,6 +3,7 @@ from rest_framework.generics import GenericAPIView
 from .serializers import IdeaSerializer, ProjectSerializer
 from .models import Idea, Project
 from rest_framework.response import Response
+from utils.sanitizers import sanitize_html
 
 class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
@@ -14,7 +15,8 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
     
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project'])
-        serializer.save(project=project)
+        sanitized_content = sanitize_html(self.request.data.get('content', ''))
+        serializer.save(project=project, content=sanitized_content)
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -35,6 +37,10 @@ class RetrieveUpdateDeleteIdea(
 
     serializer_class = IdeaSerializer
     queryset = Idea.objects.all()
+
+    def perform_update(self, serializer):
+        sanitized_content = sanitize_html(self.request.data.get('content', ''))
+        serializer.save(content=sanitized_content)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
