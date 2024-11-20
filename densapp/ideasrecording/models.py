@@ -17,7 +17,7 @@ class Idea(models.Model):
 
     unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField()
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True, default="Untitled")
     category = models.CharField(max_length=9, choices=Category.choices, default=Category.RANDOM)
     project = models.ForeignKey("Project", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
