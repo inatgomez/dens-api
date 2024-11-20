@@ -3,7 +3,7 @@ from rest_framework.generics import GenericAPIView
 from .serializers import IdeaSerializer, ProjectSerializer
 from .models import Idea, Project
 from rest_framework.response import Response
-from utils.sanitizers import sanitize_html
+from .sanitizers import sanitize_html
 
 class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
