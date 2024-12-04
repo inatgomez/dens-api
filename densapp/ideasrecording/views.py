@@ -21,7 +21,7 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         if not queryset.exists():
-            return Response([{"message": "You'll see your ideas soon!"}])
+            return Response([])
         return self.list(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
@@ -62,7 +62,7 @@ class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericA
     def get(self, request, *args, **kwargs):
         projects = self.get_queryset()
         if not projects.exists():
-            return Response([{"message": "You'll see your projects soon!"}])
+            return Response([])
         return self.list(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
