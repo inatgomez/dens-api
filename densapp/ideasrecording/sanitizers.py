@@ -9,5 +9,5 @@ def sanitize_html(content):
         content,
         tags=allowed_tags,
         attributes=allowed_attributes,
-        styles=allowed_styles
+        # styles=allowed_styles,
     )
