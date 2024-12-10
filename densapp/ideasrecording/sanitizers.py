@@ -28,8 +28,3 @@ def sanitize_html(content):
         strip_comments=True,
         link_rel="noopener noreferrer",
     )
-
-
-user_input = "<b>Hello <a href='javascript:alert(1)'>world</a></b>"
-cleaned_input = sanitize_html(user_input)
-print(cleaned_input)
