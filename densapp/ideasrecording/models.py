@@ -15,9 +15,9 @@ class Idea(models.Model):
         RESEARCH = 'RESEARCH', 'Research'
         RANDOM = 'RANDOM', 'Random'
 
-    id = models.IntegerField(primary_key=True)
+    unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = models.TextField()
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True, default="Untitled")
     category = models.CharField(max_length=9, choices=Category.choices, default=Category.RANDOM)
     project = models.ForeignKey("Project", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -48,7 +48,7 @@ class Project(models.Model):
     unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(default=timezone.now)
-    main_genre = models.CharField(max_length=13, choices=Genre.choices)
+    main_genre = models.CharField(max_length=13, choices=Genre.choices, blank=True)
     mix_genre = models.CharField(max_length=13, choices=Genre.choices, blank=True)
 
     def __str__(self):
