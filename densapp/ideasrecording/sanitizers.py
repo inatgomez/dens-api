@@ -1,13 +1,35 @@
-import bleach
+import nh3
 
-allowed_tags = ['b', 'i', 'u', 'ul', 'ol', 'li', 'p', 'br', 'strong', 'em']
-allowed_attributes = {}
-allowed_styles = []
+ALLOWED_TAGS = {"a",
+                "abbr",
+                "acronym",
+                "b",
+                "blockquote",
+                "code",
+                "em",
+                "I",
+                "li",
+                "ol",
+                "strong",
+                "ul",
+                "s",
+                "sup",
+                "sub",}
+ALLOWED_ATTRIBUTES = {"a": {"href"},}
+URL_SCHEMES = {'https'}
 
 def sanitize_html(content):
-    return bleach.clean(
+    """Sanitize HTML content using nh3."""
+    return nh3.clean(
         content,
-        tags=allowed_tags,
-        attributes=allowed_attributes,
-        # styles=allowed_styles,
+        tags=ALLOWED_TAGS,
+        attributes=ALLOWED_ATTRIBUTES,
+        url_schemes=URL_SCHEMES,
+        strip_comments=True,
+        link_rel="noopener noreferrer",
     )
+
+
+user_input = "<b>Hello <a href='javascript:alert(1)'>world</a></b>"
+cleaned_input = sanitize_html(user_input)
+print(cleaned_input)
