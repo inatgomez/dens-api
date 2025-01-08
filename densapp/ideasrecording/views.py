@@ -37,6 +37,7 @@ class RetrieveUpdateDeleteIdea(
 
     serializer_class = IdeaSerializer
     queryset = Idea.objects.all()
+    lookup_field = 'unique_id'
 
     def perform_update(self, serializer):
         sanitized_content = sanitize_html(self.request.data.get('content', ''))
