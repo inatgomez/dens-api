@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 from django.utils import timezone
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 
 class Idea(models.Model):
     """
@@ -22,6 +24,13 @@ class Idea(models.Model):
     project = models.ForeignKey("Project", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    search_vector = SearchVectorField(fields=["content"], null=True)
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=["search_vector"], name="idea_search_idx"),
+        ]
 
     def __str__(self):
         return self.title
