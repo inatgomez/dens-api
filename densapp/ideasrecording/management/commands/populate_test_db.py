@@ -223,7 +223,7 @@ class Command(BaseCommand):
             self.stdout.write(f'Created project: {name}')
 
         for project in projects:
-            for _ in range(10):
+            for _ in range(20):
                 category = random.choice(list(Idea.Category))
                 content = self.generate_content(category)
                 created_at = self.generate_random_date(project.created_at, end_date)
