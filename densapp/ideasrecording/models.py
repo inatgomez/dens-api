@@ -25,7 +25,7 @@ class Idea(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    search_vector = SearchVectorField(fields=["content"], null=True)
+    search_vector = SearchVectorField(null=True)
 
     class Meta:
         indexes = [
