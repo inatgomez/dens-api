@@ -1,9 +1,13 @@
 from rest_framework import mixins
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from .serializers import IdeaSerializer, ProjectSerializer
 from .models import Idea, Project
 from rest_framework.response import Response
 from .sanitizers import sanitize_html
+from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery, SearchHeadline
+from .serializers import IdeaSearchSerializer
+
+
 
 class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
@@ -54,6 +58,7 @@ class RetrieveUpdateDeleteIdea(
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+    
         
 class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
@@ -89,3 +94,34 @@ class RetrieveUpdateDeleteProject(
     
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+    
+class IdeaSearchView(ListAPIView):
+    serializer_class = IdeaSearchSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '')
+        category = self.request.query_params.get('category', None)
+
+        if not query:
+            return Idea.objects.none()
+        
+        vector = SearchVector('content', weight='A')
+        search_query = SearchQuery(query)
+
+        queryset = Idea.objects.annotate(
+            rank=SearchRank(vector, search_query),
+            highlighted_content=SearchHeadline(
+                'content',
+                search_query,
+                start_sel='<mark>',
+                stop_sel='</mark>',
+                max_fragments=2,
+            )
+        ).filter(
+            search_vector=search_query
+        ).order_by('-rank', '-created_at')
+
+        if category:
+            queryset = queryset.filter(category=category)
+
+        return queryset
