@@ -105,8 +105,10 @@ class IdeaSearchView(ListAPIView):
         if not query:
             return Idea.objects.none()
         
+        processed_query = ' & '.join(word + ':*' for word in query.split())
+        
         vector = SearchVector('content', weight='A')
-        search_query = SearchQuery(query)
+        search_query = SearchQuery(processed_query, search_type='raw')
 
         queryset = Idea.objects.select_related('project').annotate(
             rank=SearchRank(vector, search_query),
