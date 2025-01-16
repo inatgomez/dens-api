@@ -120,7 +120,7 @@ class IdeaSearchView(ListAPIView):
                 max_fragments=2,
             )
         ).filter(
-            search_vector=search_query
+            rank__gte=0.1
         ).order_by('-rank', '-created_at')
 
         if category:
