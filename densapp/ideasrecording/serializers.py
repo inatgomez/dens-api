@@ -22,6 +22,8 @@ class IdeaSearchSerializer(serializers.ModelSerializer):
     highlighted_content = serializers.CharField(read_only=True)
     rank = serializers.FloatField(read_only=True)
     preview_content = serializers.SerializerMethodField()
+    project_name = serializers.CharField(source='project.name', read_only=True)
+    project_id = serializers.UUIDField(source='project.unique_id', read_only=True)
 
     class Meta:
         model = Idea
@@ -31,7 +33,9 @@ class IdeaSearchSerializer(serializers.ModelSerializer):
             'highlighted_content',
             'category',
             'created_at',
-            'rank'
+            'rank',
+            'project_name',
+            'project_id'
         ]
     
     def get_preview_content(self, obj):

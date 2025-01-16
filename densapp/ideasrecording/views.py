@@ -108,7 +108,7 @@ class IdeaSearchView(ListAPIView):
         vector = SearchVector('content', weight='A')
         search_query = SearchQuery(query)
 
-        queryset = Idea.objects.annotate(
+        queryset = Idea.objects.select_related('project').annotate(
             rank=SearchRank(vector, search_query),
             highlighted_content=SearchHeadline(
                 'content',
