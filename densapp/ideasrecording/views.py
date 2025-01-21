@@ -1,12 +1,10 @@
 from rest_framework import mixins
 from rest_framework.generics import GenericAPIView, ListAPIView
-from .serializers import IdeaSerializer, ProjectSerializer
+from .serializers import IdeaSerializer, ProjectSerializer, IdeaSearchSerializer
 from .models import Idea, Project
 from rest_framework.response import Response
 from .sanitizers import sanitize_html
 from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery, SearchHeadline
-from .serializers import IdeaSearchSerializer
-
 
 
 class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
