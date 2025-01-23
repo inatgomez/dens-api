@@ -13,7 +13,8 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
     
     def get_queryset(self):
         project_id = self.kwargs.get('project')
-        return Idea.objects.filter(project__pk=project_id)
+        user=self.request.user
+        return Idea.objects.filter(project__pk=project_id, project__user=user)
     
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project'])
@@ -41,6 +42,10 @@ class RetrieveUpdateDeleteIdea(
     queryset = Idea.objects.all()
     lookup_field = 'unique_id'
 
+    def get_queryset(self):
+        user = self.request.user
+        return Idea.objects.filter(project__user=user)
+
     def perform_update(self, serializer):
         sanitized_content = sanitize_html(self.request.data.get('content', ''))
         serializer.save(content=sanitized_content)
@@ -61,7 +66,10 @@ class RetrieveUpdateDeleteIdea(
 class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
 
     serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        return Project.objects.filter(user=user)
 
     def get(self, request, *args, **kwargs):
         projects = self.get_queryset()
@@ -79,7 +87,10 @@ class RetrieveUpdateDeleteProject(
     GenericAPIView
 ):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        return Project.objects.filter(user=user)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -99,6 +110,7 @@ class IdeaSearchView(ListAPIView):
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         category = self.request.query_params.get('category', None)
+        user = self.request.user
 
         if not query:
             return Idea.objects.none()
@@ -118,7 +130,8 @@ class IdeaSearchView(ListAPIView):
                 max_fragments=2,
             )
         ).filter(
-            rank__gte=0.1
+            rank__gte=0.1,
+            project__user=user
         ).order_by('-rank', '-created_at')
 
         if category:
