@@ -71,6 +71,10 @@ class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericA
         user = self.request.user
         return Project.objects.filter(user=user)
 
+    def perform_create(self, serializer):
+        sanitized_name = sanitize_html(self.request.data.get('name', ''))
+        serializer.save(name=sanitized_name)
+
     def get(self, request, *args, **kwargs):
         projects = self.get_queryset()
         if not projects.exists():
@@ -91,6 +95,10 @@ class RetrieveUpdateDeleteProject(
     def get_queryset(self):
         user = self.request.user
         return Project.objects.filter(user=user)
+    
+    def perform_update(self, serializer):
+        sanitized_name=sanitize_html(self.request.data.get('name', ''))
+        serializer.save(name=sanitized_name)
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -115,7 +123,8 @@ class IdeaSearchView(ListAPIView):
         if not query:
             return Idea.objects.none()
         
-        processed_query = ' & '.join(word + ':*' for word in query.split())
+        sanitized_query = sanitize_html(query)
+        processed_query = ' & '.join(word + ':*' for word in sanitized_query.split())
         
         vector = SearchVector('content', weight='A')
         search_query = SearchQuery(processed_query, search_type='raw')
