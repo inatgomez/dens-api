@@ -14,9 +14,20 @@ logger = logging.getLogger(__name__)
 
 class CustomProviderAuthView(ProviderAuthView):
     def post(self, request, *args, **kwargs):
+        stored_state = request.session.get('oauth_state')
+        incoming_state = request.data.get('state')
+        
+        if not stored_state or stored_state != incoming_state:
+            return Response(
+                {"detail": "Invalid state parameter"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         response = super().post(request, *args, **kwargs)
 
         if response.status_code == 200:
+            if 'oauth_state' in request.session:
+                del request.session['oauth_state']
+                
             access_token = response.data.get('access')
             refresh_token = response.data.get('refresh')
 
