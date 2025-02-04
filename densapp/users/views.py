@@ -24,7 +24,8 @@ class CustomProviderAuthView(ProviderAuthView):
                 path=settings.AUTH_COOKIE_PATH,
                 secure=settings.AUTH_COOKIE_SECURE,
                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-                samesite=settings.AUTH_COOKIE_SAMESITE
+                samesite=settings.AUTH_COOKIE_SAMESITE,
+                domain=settings.AUTH_COOKIE_DOMAIN
             )
             response.set_cookie(
                 'refresh',
@@ -33,7 +34,8 @@ class CustomProviderAuthView(ProviderAuthView):
                 path=settings.AUTH_COOKIE_PATH,
                 secure=settings.AUTH_COOKIE_SECURE,
                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-                samesite=settings.AUTH_COOKIE_SAMESITE
+                samesite=settings.AUTH_COOKIE_SAMESITE,
+                domain=settings.AUTH_COOKIE_DOMAIN
             )
 
         return response
@@ -53,7 +55,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 path=settings.AUTH_COOKIE_PATH,
                 secure=settings.AUTH_COOKIE_SECURE,
                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-                samesite=settings.AUTH_COOKIE_SAMESITE
+                samesite=settings.AUTH_COOKIE_SAMESITE,
+                domain=settings.AUTH_COOKIE_DOMAIN
             )
             response.set_cookie(
                 'refresh',
@@ -62,7 +65,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 path=settings.AUTH_COOKIE_PATH,
                 secure=settings.AUTH_COOKIE_SECURE,
                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-                samesite=settings.AUTH_COOKIE_SAMESITE
+                samesite=settings.AUTH_COOKIE_SAMESITE,
+                domain=settings.AUTH_COOKIE_DOMAIN
             )
         
         return response
@@ -86,7 +90,8 @@ class CustomTokenRefreshView(TokenRefreshView):
                 path=settings.AUTH_COOKIE_PATH,
                 secure=settings.AUTH_COOKIE_SECURE,
                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-                samesite=settings.AUTH_COOKIE_SAMESITE
+                samesite=settings.AUTH_COOKIE_SAMESITE,
+                domain=settings.AUTH_COOKIE_DOMAIN
             )
 
         return response
