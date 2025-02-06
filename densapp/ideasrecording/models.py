@@ -60,7 +60,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     main_genre = models.CharField(max_length=13, choices=Genre.choices, blank=True)
     mix_genre = models.CharField(max_length=13, choices=Genre.choices, blank=True)
-    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='projects', default=1)
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='projects')
 
     def __str__(self):
         return self.name
