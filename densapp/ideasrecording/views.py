@@ -17,7 +17,7 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
         return Idea.objects.filter(project__pk=project_id, project__user=user)
     
     def perform_create(self, serializer):
-        project = Project.objects.get(pk=self.kwargs['project'])
+        project = Project.objects.get(pk=self.kwargs['project'], user=self.request.user)
         sanitized_content = sanitize_html(self.request.data.get('content', ''))
         serializer.save(project=project, content=sanitized_content)
 
@@ -28,7 +28,6 @@ class CreateListIdea(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIV
         return self.list(request, *args, **kwargs)
     
     def post(self, request, *args, **kwargs):
-        request.data['project'] = request.data.get('project_id')
         return self.create(request, *args, **kwargs)
 
 class RetrieveUpdateDeleteIdea(
@@ -73,7 +72,7 @@ class CreateListProject(mixins.ListModelMixin, mixins.CreateModelMixin, GenericA
 
     def perform_create(self, serializer):
         sanitized_name = sanitize_html(self.request.data.get('name', ''))
-        serializer.save(name=sanitized_name)
+        serializer.save(name=sanitized_name, user=self.request.user)
 
     def get(self, request, *args, **kwargs):
         projects = self.get_queryset()

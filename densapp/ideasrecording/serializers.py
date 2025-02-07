@@ -5,7 +5,7 @@ class IdeaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Idea
         fields = "__all__"
-        read_only_fields = ('created_at', 'updated_at')
+        read_only_fields = ('created_at', 'updated_at', 'project')
 
     def validate_content(self, value):
         if len(value) > 2000:
@@ -16,7 +16,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = "__all__"
+        fields = ['unique_id', 'name', 'main_genre', 'mix_genre', 'user']
+        read_only_fields = ['unique_id', 'user']
 
 class IdeaSearchSerializer(serializers.ModelSerializer):
     highlighted_content = serializers.CharField(read_only=True)
