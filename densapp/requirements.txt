@@ -1,5 +1,6 @@
 asgiref==3.8.1
 Authlib==1.0.1
+Brotli==1.1.0
 certifi==2024.12.14
 cffi==1.17.1
 chardet==3.0.4
@@ -10,7 +11,7 @@ defusedxml==0.8.0rc2
 Django==5.1.1
 django-cors-headers==4.4.0
 djangorestframework==3.15.2
-djangorestframework-simplejwt==5.4.0
+djangorestframework_simplejwt==5.4.0
 djoser==2.3.1
 gunicorn==23.0.0
 h11==0.14.0
@@ -35,3 +36,4 @@ typing_extensions==4.12.2
 urllib3==2.3.0
 uvicorn==0.34.0
 webencodings==0.5.1
+whitenoise==6.9.0
