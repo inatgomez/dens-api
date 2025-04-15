@@ -28,7 +28,7 @@ The backend server for Writer's Den, a note-taking app designed specifically for
 
 ```bash
 git clone https://github.com/inatgomez/dens-api.git
-cd writers-den-backend
+cd densapp
 ```
 
 2. Create a virtual environment and activate it
@@ -41,7 +41,6 @@ source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 3. Install dependencies
 
 ```bash
-cd densapp
 pip install -r requirements.txt
 ```
 
