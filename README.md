@@ -154,5 +154,3 @@ When deploying to production:
 3. Update `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS` to match your production domains
 4. Consider using a production-ready database
 5. Be aware of latency issues with free-tier hosting services (2-5 min server startup time possible)
-
-You can read more about the project in [this article](https://www.natgomez.com/projects/writers-den-project/).
